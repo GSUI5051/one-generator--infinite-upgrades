@@ -930,7 +930,7 @@ function buyMaxUpgrade(event){
     var cost=getMaxUpgradeCost(name);
     var currency=getCurrencyUsed(name);
     if (cost.gt(currency)){
-      console.warn("Somehow buy max can spend more than currency... probably imprecision?");
+      console.warn("有时候购买最大数量的升级，需要比预期还多的金币，也许是为了速度，牺牲了精度？");
       cost=currency.clone();
     }
     if (getUpgrade(name).eq(getUpgrade(name).add(amount))) return;
@@ -987,7 +987,7 @@ function autoBuy(dt){
     if (game.upgrades.strongerGenerators13.gte(ExpantaNum.EE_MAX_SAFE_INTEGER)||getAutoBuy3PerSecond(dt).gt(ExpantaNum.MAX_SAFE_INTEGER)){
       game.timer.autoBuy3TowerIncrease=game.timer.autoBuy3TowerIncrease.add(getAutoBuy3PerSecond(dt).mul(dt/1000));
       if (!game.timer.autoBuy3TowerIncrease.isFinite()){
-        console.warn("ab3 is attempting to buy "+game.timer.autoBuy3TowerIncrease+" times, please report this!");
+        console.warn("有人似乎想要购买升级 ab3 "+game.timer.autoBuy3TowerIncrease+" 次，请告诉我！");
         game.timer.autoBuy3TowerIncrease=ExpantaNum.ZERO.clone();
       }else if (game.timer.autoBuy3TowerIncrease.gte(ExpantaNum.ONE)){
         var f=game.timer.autoBuy3TowerIncrease.floor();
@@ -1006,7 +1006,7 @@ function autoBuy(dt){
   if (game.ascension.upgrades.autoBuy6.eq(ExpantaNum.ONE)&&game.ascension.upgrades.efficientPrestige7.neq(ExpantaNum.ONE)){
     game.timer.ascension.autoBuy6Cooldown=game.timer.ascension.autoBuy6Cooldown.add(dt/1000);
     if (!game.timer.ascension.autoBuy6Cooldown.isFinite()){
-      console.warn("aab6 timer has went non-finite");
+      console.warn("升级 aab6 的计时器炸了！");
       game.timer.ascension.autoBuy6Cooldown=ExpantaNum.ZERO.clone();
     }else if (game.timer.ascension.autoBuy6Cooldown.gte(ExpantaNum.ONE)){
       ascension();
@@ -1161,7 +1161,7 @@ function updateDisplayUpgradesFromNamespace(name){
     var factors=getUpgradeCostFactor(i);
     if (firstFrame||updated.upgradeAmount[i]){
       if (factors.type=="once"){
-        dg(i+"Num").textContent=getUpgrade(i).eq(ExpantaNum.ZERO)?"not":"has";
+        dg(i+"Num").textContent=getUpgrade(i).eq(ExpantaNum.ZERO)?"未":"已";
       }else{
         dg(i+"Num").textContent=N(getUpgrade(i));
       }
@@ -1205,7 +1205,7 @@ function updateDisplayUpgrades(dt){
   showIf("autoBuy",function(){return game.upgrades.strongerGenerators6.gte(ExpantaNum.TWO);});
   showIf(["autoBuyToggle","autoBuyHide"],function(){return game.upgrades.autoBuy.gte(ExpantaNum.ONE);});
   dg("autoBuyToggle").textContent=game.upgrades.autoBuy.eq(ExpantaNum.ONE)?"已启用":"已禁用";
-  dg("autoBuyHide").textContent=game.hidden.autoBuy?"隐藏":"显示";
+  dg("autoBuyHide").textContent=game.hidden.autoBuy?"显示":"隐藏";
   if (game.upgrades.strongerGenerators11.gte(ExpantaNum.ONE)){
     dg("strongerGenerators9Eff").textContent=N(ExpantaNum.pow(2.5,ExpantaNum.pow(1.17,game.upgrades.strongerGenerators10.mul(ExpantaNum.pow(1.06,game.upgrades.strongerGenerators13)))).sub(ExpantaNum.ONE).mul(100));
   }
@@ -1216,7 +1216,7 @@ function updateDisplayUpgrades(dt){
   showIf(["autoBuy2","strongerGenerators13"],function(){return game.upgrades.strongerGenerators12.gte(6);});
   showIf(["autoBuy2Toggle","autoBuy2Hide"],function(){return game.upgrades.autoBuy2.gte(ExpantaNum.ONE);});
   dg("autoBuy2Toggle").textContent=game.upgrades.autoBuy2.eq(ExpantaNum.ONE)?"已启用":"已禁用";
-  dg("autoBuy2Hide").textContent=game.hidden.autoBuy2?"隐藏":"显示";
+  dg("autoBuy2Hide").textContent=game.hidden.autoBuy2?"显示":"隐藏";
   showIf(["cheaperUpgrades4","cheaperUpgrades5"],function(){return game.upgrades.strongerGenerators13.gte(7);});
   showIf("strongerGenerators14",function(){return game.upgrades.cheaperUpgrades5.gte(ExpantaNum.ONE);});
   showIf("strongerGenerators15",function(){return game.upgrades.strongerGenerators14.gte(8);});
@@ -1231,7 +1231,7 @@ function updateDisplayUpgrades(dt){
   showIf(["autoBuy3","doAscensionContainer"],function(){return game.upgrades.strongerGenerators13.gte("10^^10");});
   showIf("autoBuy3Toggle",function(){return game.upgrades.autoBuy3.gte(ExpantaNum.ONE);});
   dg("autoBuy3Toggle").textContent=game.upgrades.autoBuy3.eq(ExpantaNum.ONE)?"已启用":"已禁用";
-  if (game.ascension.upgrades.autoBuy.gte(ExpantaNum.ONE)) dg("autoBuy3Eff").textContent=N(getAutoBuy3PerSecond())+" times";
+  if (game.ascension.upgrades.autoBuy.gte(ExpantaNum.ONE)) dg("autoBuy3Eff").textContent=N(getAutoBuy3PerSecond())+" 次";
   var ascensionPointGain=getAscensionPointGain();
   dg("doAscension").textContent="获得 "+N(ascensionPointGain)+" 飞升点数";
   if (ascensionPointGain.eq(ExpantaNum.ZERO)) dg("doAscension").classList.add("unavailable");
@@ -1270,7 +1270,7 @@ function updateDisplayAscension(dt){
   showIf("ascension.autoBuy4",function(){return game.ascension.upgrades.efficientPrestige5.gte(14);});
   showIf(["ascension.autoBuy4Toggle","ascension.autoBuy4Hide"],function(){return game.ascension.upgrades.autoBuy4.gte(ExpantaNum.ONE);});
   dg("ascension.autoBuy4Toggle").textContent=game.ascension.upgrades.autoBuy4.eq(ExpantaNum.ONE)?"已启用":"已禁用";
-  dg("ascension.autoBuy4Hide").textContent=game.hidden.ascension.autoBuy4?"隐藏":"显示";
+  dg("ascension.autoBuy4Hide").textContent=game.hidden.ascension.autoBuy4?"显示":"隐藏";
   showIf("ascension.autoBuy6",function(){return game.ascension.upgrades.efficientPrestige6.gte(30);});
   showIf("ascension.autoBuy6Toggle",function(){return game.ascension.upgrades.autoBuy6.gte(ExpantaNum.ONE);});
   dg("ascension.autoBuy6Toggle").textContent=game.ascension.upgrades.autoBuy6.eq(ExpantaNum.ONE)?"已启用":"已禁用";
@@ -1278,7 +1278,7 @@ function updateDisplayAscension(dt){
   showIf("ascension.autoBuy7",function(){return game.ascension.upgrades.efficientPrestige6.gte(400);});
   showIf(["ascension.autoBuy7Toggle","ascension.autoBuy7Hide"],function(){return game.ascension.upgrades.autoBuy7.gte(ExpantaNum.ONE);});
   dg("ascension.autoBuy7Toggle").textContent=game.ascension.upgrades.autoBuy7.eq(ExpantaNum.ONE)?"已启用":"已禁用";
-  dg("ascension.autoBuy7Hide").textContent=game.hidden.ascension.autoBuy7?"隐藏":"显示";
+  dg("ascension.autoBuy7Hide").textContent=game.hidden.ascension.autoBuy7?"显示":"隐藏";
   showIf("ascension.efficientPrestige7",function(){return game.ascension.upgrades.efficientPrestige6.gte(500);});
   updateDisplayUpgradesFromNamespace("ascension");
 }
@@ -1353,7 +1353,7 @@ function deepAssign(target,source){
 }
 var wipeClicks=0;
 var lastWipeClickTime;
-var wipeButtonText=["Wipe save","Click again","Are you sure?","Are you actually sure?","This is your last chance!","Deleting save..."];
+var wipeButtonText=["删除存档","再点一次","你确定吗？","真的确定？","你还来得及后悔！","正在删除..."];
 function wipe(){
   wipeClicks++;
   lastWipeClickTime=new Date().getTime();
